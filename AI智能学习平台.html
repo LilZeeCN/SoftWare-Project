@@ -408,6 +408,94 @@ body::after {
 .btn-secondary:hover { background: var(--bg-card-hover); color: var(--text-primary); }
 
 /* ========================================
+   NOTES PAGE (课后笔记)
+   ======================================== */
+.notes-layout { display: grid; grid-template-columns: 220px 1fr; gap: 20px; min-height: 500px; }
+.notes-sidebar { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.notes-sidebar .ns-header { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.notes-sidebar .ns-item { padding: 12px 16px; cursor: pointer; transition: var(--transition); border-bottom: 1px solid var(--border); }
+.notes-sidebar .ns-item:last-child { border-bottom: none; }
+.notes-sidebar .ns-item:hover { background: var(--bg-card-hover); }
+.notes-sidebar .ns-item.active { background: var(--gold-glow); border-left: 3px solid var(--gold); }
+.notes-sidebar .ns-item .ns-title { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+.notes-sidebar .ns-item .ns-date { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+.notes-main { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; }
+.notes-main .nm-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.notes-main .nm-header h3 { font-family: var(--font-serif); font-size: 16px; font-weight: 600; }
+.notes-main .nm-header .nm-actions { display: flex; gap: 8px; }
+.notes-main .nm-body { flex: 1; padding: 20px; overflow-y: auto; min-height: 300px; }
+.notes-main .nm-body .note-content { font-size: 14px; line-height: 1.8; color: var(--text-primary); }
+.notes-main .nm-body .note-content h4 { font-family: var(--font-serif); font-size: 15px; font-weight: 600; margin: 16px 0 8px; color: var(--gold); }
+.notes-main .nm-body .note-content p { margin-bottom: 8px; }
+.notes-main .nm-body .note-content .highlight-box { background: var(--bg-glass); border-left: 3px solid var(--gold); padding: 12px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 12px 0; }
+.notes-main .nm-body .note-content code { background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px; }
+
+/* ========================================
+   LABS PAGE (实验练习)
+   ======================================== */
+.labs-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.labs-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
+.labs-header .lh-tag { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 20px; background: var(--gold-glow); color: var(--gold); margin-bottom: 8px; }
+.labs-header h2 { font-family: var(--font-serif); font-size: 18px; font-weight: 600; }
+.labs-header .lh-desc { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.labs-meta { display: flex; gap: 20px; padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--bg-glass); }
+.labs-meta span { font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; gap: 4px; }
+.labs-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 350px; }
+.labs-body .lb-panel { padding: 20px; overflow-y: auto; }
+.labs-body .lb-panel:first-child { border-right: 1px solid var(--border); }
+.labs-body .lb-panel h4 { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+.labs-body .lb-panel .task-step { display: flex; gap: 10px; margin-bottom: 10px; font-size: 13px; color: var(--text-primary); align-items: flex-start; }
+.labs-body .lb-panel .task-step .step-num { width: 20px; height: 20px; border-radius: var(--radius-full); background: var(--gold-glow); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+.code-area { background: #0d1117; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; font-family: var(--font-mono); font-size: 13px; color: #e6edf3; line-height: 1.7; margin-bottom: 12px; min-height: 180px; white-space: pre-wrap; }
+.code-area .cmt { color: #8b949e; }
+.code-area .kw { color: #ff7b72; }
+.code-area .fn { color: #d2a8ff; }
+.code-area .str { color: #a5d6ff; }
+.labs-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ========================================
+   REPORT PAGE (学习报告)
+   ======================================== */
+.report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+.report-stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; text-align: center; }
+.report-stat-card .rsc-value { font-family: var(--font-display); font-size: 32px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+.report-stat-card .rsc-label { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
+.report-stat-card .rsc-icon { font-size: 24px; margin-bottom: 8px; }
+.report-chart-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 16px; }
+.report-chart-card h3 { font-family: var(--font-serif); font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+.chart-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.chart-bar-row .cbr-label { width: 60px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; text-align: right; }
+.chart-bar-row .cbr-track { flex: 1; height: 22px; background: rgba(255,255,255,0.04); border-radius: 4px; overflow: hidden; position: relative; }
+.chart-bar-row .cbr-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+.chart-bar-row .cbr-value { width: 40px; font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); flex-shrink: 0; }
+.report-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.report-table th { text-align: left; padding: 10px 12px; color: var(--text-tertiary); font-weight: 500; border-bottom: 1px solid var(--border); font-size: 12px; }
+.report-table td { padding: 10px 12px; color: var(--text-primary); border-bottom: 1px solid var(--border); }
+.report-table tr:hover td { background: var(--bg-glass); }
+.report-table .rt-tag { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 10px; }
+.report-table .rt-tag.a { background: var(--jade-glow); color: var(--jade); }
+.report-table .rt-tag.b { background: var(--gold-glow); color: var(--gold); }
+.report-table .rt-tag.c { background: rgba(124,109,240,0.12); color: var(--accent-purple); }
+
+/* ========================================
+   CERTIFICATES PAGE (我的证书)
+   ======================================== */
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.cert-card { background: linear-gradient(135deg, rgba(212,168,83,0.05), rgba(212,168,83,0.01)); border: 1px solid var(--border-active); border-radius: var(--radius-lg); overflow: hidden; transition: var(--transition); cursor: pointer; position: relative; }
+.cert-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(212,168,83,0.12); border-color: var(--gold); }
+.cert-card .cert-ribbon { height: 6px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold-dark)); }
+.cert-card .cert-body { padding: 24px 24px 20px; text-align: center; }
+.cert-card .cert-seal { font-size: 40px; margin-bottom: 12px; display: inline-block; }
+.cert-card .cert-title { font-family: var(--font-serif); font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.cert-card .cert-subtitle { font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; }
+.cert-card .cert-divider { width: 60px; height: 2px; background: var(--gold); margin: 0 auto 12px; border-radius: 2px; }
+.cert-card .cert-meta { font-size: 12px; color: var(--text-secondary); }
+.cert-card .cert-badge { display: inline-block; margin-top: 12px; padding: 4px 14px; border-radius: 20px; background: var(--gold-glow); color: var(--gold); font-size: 11px; font-weight: 600; border: 1px solid var(--border-active); }
+.cert-card.locked { opacity: 0.5; border-color: var(--border); background: var(--bg-card); }
+.cert-card.locked .cert-ribbon { background: var(--border); }
+.cert-card.locked .cert-badge { background: var(--bg-glass); color: var(--text-tertiary); border-color: var(--border); }
+
+/* ========================================
    SETTINGS
    ======================================== */
 .settings-group { margin-bottom: 28px; }
@@ -624,7 +712,10 @@ body::after {
     </button>
     <div class="spacer"></div>
     <button class="nav-icon" data-page="settings" title="设置" onclick="navigateTo('settings')">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12.5 2h-1l-.5 1.7a8.5 8.5 0 0 0-2.3 1.3l-1.7-.5-1 1 .5 1.7a8.5 8.5 0 0 0-1.3 2.3l-1.7.5v1l1.7.5c.3.8.7 1.6 1.3 2.3l-.5 1.7 1 1 1.7-.5a8.5 8.5 0 0 0 2.3 1.3l.5 1.7h1l.5-1.7a8.5 8.5 0 0 0 2.3-1.3l1.7.5 1-1-.5-1.7a8.5 8.5 0 0 0 1.3-2.3l1.7-.5v-1l-1.7-.5a8.5 8.5 0 0 0-1.3-2.3l.5-1.7-1-1-1.7.5A8.5 8.5 0 0 0 13 3.7L12.5 2z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
     </button>
   </nav>
 
@@ -767,16 +858,16 @@ body::after {
             <button class="quick-action-btn" onclick="navigateTo('classroom')">
               <span class="qa-icon">💬</span><span>AI 问答</span>
             </button>
-            <button class="quick-action-btn" onclick="showToast('📓 正在打开课后笔记……')">
+            <button class="quick-action-btn" onclick="navigateTo('notes')">
               <span class="qa-icon">📓</span><span>课后笔记</span>
             </button>
-            <button class="quick-action-btn" onclick="showToast('🧪 正在加载实验环境……')">
+            <button class="quick-action-btn" onclick="navigateTo('labs')">
               <span class="qa-icon">🧪</span><span>实验练习</span>
             </button>
-            <button class="quick-action-btn" onclick="showToast('📊 正在生成学习报告……')">
+            <button class="quick-action-btn" onclick="navigateTo('report')">
               <span class="qa-icon">📊</span><span>学习报告</span>
             </button>
-            <button class="quick-action-btn" onclick="showToast('🏅 你已获得 3 张结课证书')">
+            <button class="quick-action-btn" onclick="navigateTo('certificates')">
               <span class="qa-icon">🏅</span><span>我的证书</span>
             </button>
           </div>
@@ -1072,6 +1163,300 @@ body::after {
       </div>
     </div>
 
+    <!-- ===== 课后笔记 ===== -->
+    <div class="page" id="page-notes">
+      <div class="page-header">
+        <div class="breadcrumb">
+          <button class="back-btn" onclick="navigateTo('dashboard')">← 返回</button>
+          <span class="sep">/</span>
+          <span>课后笔记</span>
+        </div>
+        <h1>课后笔记</h1>
+        <p>手动记录学习笔记或由 AI 自动生成结构化总结</p>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button class="btn btn-primary" style="font-size:13px;padding:8px 18px;" onclick="generateAINotes()">🤖 AI 生成笔记</button>
+        <button class="btn btn-secondary" style="font-size:13px;padding:8px 18px;" onclick="showToast('📝 新建笔记已创建')">＋ 新建笔记</button>
+      </div>
+
+      <div class="notes-layout">
+        <div class="notes-sidebar">
+          <div class="ns-header">学习章节</div>
+          <div class="ns-item active">
+            <div class="ns-title">📖 第 7 章 · 面向对象</div>
+            <div class="ns-date">2026-05-28</div>
+          </div>
+          <div class="ns-item" onclick="showToast('📓 切换至第 6 章笔记')">
+            <div class="ns-title">📖 第 6 章 · 数据结构</div>
+            <div class="ns-date">2026-05-25</div>
+          </div>
+          <div class="ns-item" onclick="showToast('📓 切换至第 5 章笔记')">
+            <div class="ns-title">📖 第 5 章 · 函数与模块</div>
+            <div class="ns-date">2026-05-20</div>
+          </div>
+          <div class="ns-item" onclick="showToast('📓 切换至第 4 章笔记')">
+            <div class="ns-title">📖 第 4 章 · 字符串操作</div>
+            <div class="ns-date">2026-05-15</div>
+          </div>
+        </div>
+
+        <div class="notes-main">
+          <div class="nm-header">
+            <h3>📖 第 7 章 · 面向对象编程 — 学习笔记</h3>
+            <div class="nm-actions">
+              <button class="btn-ghost" style="font-size:12px;padding:4px 12px;" onclick="showToast('📥 笔记已导出为 .md 文件')">📥 导出</button>
+              <button class="btn-ghost gold" style="font-size:12px;padding:4px 12px;" onclick="showToast('✏️ 已进入编辑模式')">✏️ 编辑</button>
+            </div>
+          </div>
+          <div class="nm-body">
+            <div class="note-content">
+              <h4>一、面向对象核心概念</h4>
+              <p><strong>类（Class）</strong>是对象的蓝图和模板。它定义了对象共有的属性和方法。类本身不占用内存空间，只有被实例化后才会分配内存。</p>
+              <p><strong>对象（Object）</strong>是类的实例。每个对象都有独立的属性值，可以调用类中定义的方法。</p>
+              <div class="highlight-box">
+                <strong>💡 核心区别：</strong>类是抽象的概念（如"建筑设计图"），对象是具体的实体（如"实际的房子"）。类定义"是什么"，对象是"具体的那个"。
+              </div>
+
+              <h4>二、三大特性：封装、继承、多态</h4>
+              <p><strong>封装：</strong>将数据和操作数据的方法绑定在一起，对外隐藏内部实现细节。Python 中通过私有属性（<code>__attr</code>）实现。</p>
+              <p><strong>继承：</strong>子类可以复用父类的属性和方法，避免重复代码。Python 支持多继承。</p>
+              <p><strong>多态：</strong>同一操作作用于不同对象，产生不同的执行结果。</p>
+
+              <h4>三、魔术方法</h4>
+              <p>Python 中以双下划线开头和结尾的方法（如 <code>__init__</code>, <code>__str__</code>, <code>__repr__</code>）被称为魔术方法，它们允许类与 Python 的内置操作进行交互。</p>
+
+              <h4>四、关键代码示例</h4>
+              <p>定义了 <code>Student</code> 类，包含 name 和 score 属性，以及 <code>get_grade()</code> 方法。</p>
+              <p>通过 <code>__str__</code> 方法实现了对象的可读性输出。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 实验练习 ===== -->
+    <div class="page" id="page-labs">
+      <div class="page-header">
+        <div class="breadcrumb">
+          <button class="back-btn" onclick="navigateTo('dashboard')">← 返回</button>
+          <span class="sep">/</span>
+          <span>实验练习</span>
+        </div>
+        <h1>实验练习 (Labs)</h1>
+        <p>在线编码、本地测试与 AI 评审一体化实验环境</p>
+      </div>
+
+      <div class="labs-container">
+        <div class="labs-header">
+          <span class="lh-tag">Python 核心编程 · Lab 3</span>
+          <h2>面向对象编程 — 学生成绩管理系统</h2>
+          <div class="lh-desc">运用面向对象编程思想，设计并实现一个简单的学生成绩管理系统</div>
+        </div>
+        <div class="labs-meta">
+          <span>📊 难度：中级</span>
+          <span>⏱ 预估时长：45 分钟</span>
+          <span>📝 截止：2026-06-07</span>
+          <span>✅ 提交状态：未提交</span>
+        </div>
+        <div class="labs-body">
+          <div class="lb-panel">
+            <h4>📋 实验任务</h4>
+            <div class="task-step"><span class="step-num">1</span> 创建一个 <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-size:12px;">Student</code> 类，包含 name、student_id、scores 属性</div>
+            <div class="task-step"><span class="step-num">2</span> 实现 <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-size:12px;">add_score()</code> 方法和 <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-size:12px;">average()</code> 方法</div>
+            <div class="task-step"><span class="step-num">3</span> 创建 <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-size:12px;">GradeManager</code> 类管理多个学生</div>
+            <div class="task-step"><span class="step-num">4</span> 实现按总分排序、查询单个学生、统计不及格等功能</div>
+            <div class="task-step"><span class="step-num">5</span> 运行测试用例验证功能正确性</div>
+
+            <h4 style="margin-top:16px;font-size:13px;font-weight:600;color:var(--text-secondary);letter-spacing:0.5px;">📎 参考提示</h4>
+            <div class="highlight-box" style="background:var(--bg-glass);border-left:3px solid var(--jade);padding:12px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:8px 0;font-size:13px;">
+              建议先定义 Student 基础类，再通过组合的方式在 GradeManager 中管理学生对象。注意封装原则，scores 列表应为私有属性。
+            </div>
+          </div>
+          <div class="lb-panel">
+            <h4>💻 代码编辑器</h4>
+            <div class="code-area" contenteditable="false" id="codeArea"><span class="cmt"># 学生成绩管理系统</span>
+<span class="kw">class</span> <span class="fn">Student</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="kw">self</span>, name, student_id):
+        <span class="kw">self</span>.name = name
+        <span class="kw">self</span>.student_id = student_id
+        <span class="kw">self</span>.__scores = []
+
+    <span class="kw">def</span> <span class="fn">add_score</span>(<span class="kw">self</span>, score):
+        <span class="kw">if</span> 0 <= score <= 100:
+            <span class="kw">self</span>.__scores.append(score)
+
+    <span class="kw">def</span> <span class="fn">average</span>(<span class="kw">self</span>):
+        <span class="kw">if</span> <span class="kw">not</span> <span class="kw">self</span>.__scores:
+            <span class="kw">return</span> 0
+        <span class="kw">return</span> <span class="fn">sum</span>(<span class="kw">self</span>.__scores) / <span class="fn">len</span>(<span class="kw">self</span>.__scores)</div>
+            <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">💡 提示：点击下方按钮可编辑代码</div>
+          </div>
+        </div>
+        <div class="labs-footer">
+          <button class="btn btn-secondary" style="font-size:12px;padding:6px 16px;" onclick="showToast('🧪 正在运行测试……测试通过！')">▶ 运行测试</button>
+          <button class="btn btn-secondary" style="font-size:12px;padding:6px 16px;" onclick="showToast('🤖 AI 正在评审你的代码……')">🤖 AI 评审</button>
+          <button class="btn btn-primary" style="font-size:12px;padding:6px 16px;" onclick="showToast('✅ Lab 3 已提交！')">📤 提交</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 学习报告 ===== -->
+    <div class="page" id="page-report">
+      <div class="page-header">
+        <div class="breadcrumb">
+          <button class="back-btn" onclick="navigateTo('dashboard')">← 返回</button>
+          <span class="sep">/</span>
+          <span>学习报告</span>
+        </div>
+        <h1>学习报告</h1>
+        <p>全面了解你的学习进度与成果数据</p>
+      </div>
+
+      <div class="report-grid">
+        <div class="report-stat-card">
+          <div class="rsc-icon">📚</div>
+          <div class="rsc-value">128</div>
+          <div class="rsc-label">总学习章节</div>
+        </div>
+        <div class="report-stat-card">
+          <div class="rsc-icon">⏱</div>
+          <div class="rsc-value">86<span style="font-size:16px;color:var(--text-tertiary);">h</span></div>
+          <div class="rsc-label">总学习时长</div>
+        </div>
+        <div class="report-stat-card">
+          <div class="rsc-icon">✅</div>
+          <div class="rsc-value">24</div>
+          <div class="rsc-label">已完成实验</div>
+        </div>
+        <div class="report-stat-card">
+          <div class="rsc-icon">🏆</div>
+          <div class="rsc-value">3</div>
+          <div class="rsc-label">获得证书</div>
+        </div>
+        <div class="report-stat-card">
+          <div class="rsc-icon">💬</div>
+          <div class="rsc-value">156</div>
+          <div class="rsc-label">AI 问答次数</div>
+        </div>
+        <div class="report-stat-card">
+          <div class="rsc-icon">🔥</div>
+          <div class="rsc-value">7</div>
+          <div class="rsc-label">连续学习天数</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div class="report-chart-card">
+          <h3>📊 本周学习时长分布</h3>
+          <div class="chart-bar-row"><span class="cbr-label">周一</span><div class="cbr-track"><div class="cbr-fill" style="width:85%;background:var(--gold);"></div></div><span class="cbr-value">1.7h</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">周二</span><div class="cbr-track"><div class="cbr-fill" style="width:60%;background:var(--gold);"></div></div><span class="cbr-value">1.2h</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">周三</span><div class="cbr-track"><div class="cbr-fill" style="width:100%;background:var(--gold);"></div></div><span class="cbr-value">2.0h</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">周四</span><div class="cbr-track"><div class="cbr-fill" style="width:70%;background:var(--gold);"></div></div><span class="cbr-value">1.4h</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">周五</span><div class="cbr-track"><div class="cbr-fill" style="width:45%;background:var(--jade);"></div></div><span class="cbr-value">0.9h</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">周六</span><div class="cbr-track"><div class="cbr-fill" style="width:30%;background:var(--jade);"></div></div><span class="cbr-value">0.6h</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">周日</span><div class="cbr-track"><div class="cbr-fill" style="width:50%;background:var(--jade);"></div></div><span class="cbr-value">1.0h</span></div>
+        </div>
+
+        <div class="report-chart-card">
+          <h3>📈 课程完成进度</h3>
+          <div class="chart-bar-row"><span class="cbr-label">Python</span><div class="cbr-track"><div class="cbr-fill" style="width:72%;background:var(--gold);"></div></div><span class="cbr-value">72%</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">机器学习</span><div class="cbr-track"><div class="cbr-fill" style="width:45%;background:var(--jade);"></div></div><span class="cbr-value">45%</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">Web 全栈</span><div class="cbr-track"><div class="cbr-fill" style="width:30%;background:var(--accent-purple);"></div></div><span class="cbr-value">30%</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">数据结构</span><div class="cbr-track"><div class="cbr-fill" style="width:100%;background:var(--warning);"></div></div><span class="cbr-value">100%</span></div>
+          <div class="chart-bar-row"><span class="cbr-label">概率论</span><div class="cbr-track"><div class="cbr-fill" style="width:100%;background:var(--warning);"></div></div><span class="cbr-value">100%</span></div>
+        </div>
+      </div>
+
+      <div class="report-chart-card">
+        <h3>📋 近期学习记录</h3>
+        <table class="report-table">
+          <thead><tr><th>日期</th><th>课程</th><th>学习内容</th><th>时长</th><th>状态</th></tr></thead>
+          <tbody>
+            <tr><td>2026-05-28</td><td>Python 核心编程</td><td>第 7 章 · 面向对象</td><td>1.2h</td><td><span class="rt-tag a">已完成</span></td></tr>
+            <tr><td>2026-05-28</td><td>Python 核心编程</td><td>Lab 3 · 成绩管理系统</td><td>0.8h</td><td><span class="rt-tag b">进行中</span></td></tr>
+            <tr><td>2026-05-27</td><td>机器学习导论</td><td>第 4 章 · 神经网络原理</td><td>1.5h</td><td><span class="rt-tag a">已完成</span></td></tr>
+            <tr><td>2026-05-26</td><td>Web 全栈开发</td><td>第 3 章 · React 组件化</td><td>1.0h</td><td><span class="rt-tag c">待复习</span></td></tr>
+            <tr><td>2026-05-25</td><td>机器学习导论</td><td>Lab 2 · 线性回归实现</td><td>1.3h</td><td><span class="rt-tag a">已完成</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== 我的证书 ===== -->
+    <div class="page" id="page-certificates">
+      <div class="page-header">
+        <div class="breadcrumb">
+          <button class="back-btn" onclick="navigateTo('dashboard')">← 返回</button>
+          <span class="sep">/</span>
+          <span>我的证书</span>
+        </div>
+        <h1>我的证书</h1>
+        <p>完成课程全部里程碑后获得结课认证</p>
+      </div>
+
+      <div class="cert-grid">
+        <div class="cert-card">
+          <div class="cert-ribbon"></div>
+          <div class="cert-body">
+            <div class="cert-seal">🏅</div>
+            <div class="cert-title">数据结构与算法</div>
+            <div class="cert-subtitle">Certificate of Completion</div>
+            <div class="cert-divider"></div>
+            <div class="cert-meta">完成于 2026 年 4 月 15 日</div>
+            <div class="cert-meta" style="margin-top:2px;">成绩：优秀 (A)</div>
+            <div class="cert-badge">✓ 已验证</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-ribbon"></div>
+          <div class="cert-body">
+            <div class="cert-seal">🏅</div>
+            <div class="cert-title">概率论与数理统计</div>
+            <div class="cert-subtitle">Certificate of Completion</div>
+            <div class="cert-divider"></div>
+            <div class="cert-meta">完成于 2026 年 3 月 20 日</div>
+            <div class="cert-meta" style="margin-top:2px;">成绩：良好 (B+)</div>
+            <div class="cert-badge">✓ 已验证</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-ribbon"></div>
+          <div class="cert-body">
+            <div class="cert-seal">🏅</div>
+            <div class="cert-title">计算机科学导论</div>
+            <div class="cert-subtitle">Certificate of Completion</div>
+            <div class="cert-divider"></div>
+            <div class="cert-meta">完成于 2025 年 12 月 10 日</div>
+            <div class="cert-meta" style="margin-top:2px;">成绩：优秀 (A)</div>
+            <div class="cert-badge">✓ 已验证</div>
+          </div>
+        </div>
+        <div class="cert-card locked">
+          <div class="cert-ribbon"></div>
+          <div class="cert-body">
+            <div class="cert-seal">🔒</div>
+            <div class="cert-title">Python 核心编程</div>
+            <div class="cert-subtitle">进度 72% · 尚差 3 章</div>
+            <div class="cert-divider" style="background:var(--border);"></div>
+            <div class="cert-meta">预计完成：2026 年 6 月</div>
+            <div class="cert-badge">未完成</div>
+          </div>
+        </div>
+        <div class="cert-card locked">
+          <div class="cert-ribbon"></div>
+          <div class="cert-body">
+            <div class="cert-seal">🔒</div>
+            <div class="cert-title">机器学习导论</div>
+            <div class="cert-subtitle">进度 45% · 尚差 6 章</div>
+            <div class="cert-divider" style="background:var(--border);"></div>
+            <div class="cert-meta">预计完成：2026 年 8 月</div>
+            <div class="cert-badge">未完成</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===== SETTINGS ===== -->
     <div class="page" id="page-settings">
       <div class="page-header">
@@ -1216,7 +1601,9 @@ function navigateTo(page) {
 
   const titles = {
     dashboard: '学习概览', courses: '我的课程', 'add-course': '创建课程',
-    outline: '课程大纲', classroom: 'AI 课堂', settings: '设置'
+    outline: '课程大纲', classroom: 'AI 课堂',
+    notes: '课后笔记', labs: '实验练习', report: '学习报告', certificates: '我的证书',
+    settings: '设置'
   };
   document.getElementById('sidePanelTitle').textContent = titles[page] || '学习概览';
   updateSidePanel(page);
@@ -1245,6 +1632,18 @@ const sidePanelData = {
   classroom: [
     { name: 'Python 核心编程', meta: '第 7 章 · 面向对象', dot: 'var(--gold)', chats: ['类和对象的区别', '继承与多态', '封装概念理解'] }
   ],
+  notes: [
+    { name: '第 7 章 · 面向对象', meta: '2026-05-28 · AI 生成', dot: 'var(--gold)' },
+    { name: '第 6 章 · 数据结构', meta: '2026-05-25 · 手动记录', dot: 'var(--jade)' },
+    { name: '第 5 章 · 函数与模块', meta: '2026-05-20 · AI 生成', dot: 'var(--accent-purple)' }
+  ],
+  labs: [
+    { name: 'Lab 3 · 成绩管理系统', meta: '进行中 · 面向对象', dot: 'var(--gold)' },
+    { name: 'Lab 2 · 数据可视化', meta: '已完成 · 已提交', dot: 'var(--jade)' },
+    { name: 'Lab 1 · 基础语法练习', meta: '已完成 · 已评审', dot: 'var(--jade)' }
+  ],
+  report: null,
+  certificates: null,
   settings: null
 };
 
@@ -1253,8 +1652,8 @@ function updateSidePanel(page) {
   const data = sidePanelData[page];
 
   if (!data) {
-    const icons = { 'add-course': '📝', settings: '⚙️' };
-    const texts = { 'add-course': ['填写课程信息后提交', 'AI 将为你生成个性化课程'], settings: ['API 配置与偏好设置'] };
+    const icons = { 'add-course': '📝', settings: '⚙️', report: '📊', certificates: '🏅' };
+    const texts = { 'add-course': ['填写课程信息后提交', 'AI 将为你生成个性化课程'], settings: ['API 配置与偏好设置'], report: ['查看学习时长、完成度等数据'], certificates: ['已获得的课程结课认证'] };
     const icon = icons[page] || '📌';
     const lines = texts[page] || ['页面设置'];
     list.innerHTML = `
@@ -1534,6 +1933,54 @@ styleSheet.textContent = `
 document.head.appendChild(styleSheet);
 
 // ==========================================
+// 笔记相关
+// ==========================================
+function generateAINotes() {
+  const body = document.querySelector('.notes-main .nm-body');
+  if (!body) return;
+  showToast('🤖 AI 正在根据课程内容生成笔记……');
+  setTimeout(() => {
+    body.innerHTML = `
+      <div class="note-content">
+        <h4>📌 核心知识点总结（AI 自动生成）</h4>
+        <div class="highlight-box">
+          <strong>🤖 本章重点：</strong>面向对象编程是 Python 的核心范式，重点掌握类与对象的关系、封装继承多态三大特性、魔术方法的使用场景。
+        </div>
+        <h4>一、类与对象</h4>
+        <p><strong>类（Class）</strong>是模板，<strong>对象（Object）</strong>是实例。使用 <code>class</code> 关键字定义类，通过构造函数 <code>__init__</code> 初始化对象属性。</p>
+        <h4>二、封装</h4>
+        <p>通过私有属性（<code>__name</code>）实现信息隐藏，提供公共 getter/setter 方法控制访问。</p>
+        <h4>三、继承</h4>
+        <p>子类 <code>class Sub(Parent):</code> 继承父类所有属性和方法，可通过 <code>super()</code> 调用父类方法。</p>
+        <h4>四、多态</h4>
+        <p>不同类实现同名方法，调用时根据实际对象类型执行对应方法——"一个接口，多种实现"。</p>
+        <p style="margin-top:16px;font-size:12px;color:var(--text-tertiary);">🤖 由 AI 自动生成 · 基于课程讲义内容总结</p>
+      </div>`;
+    showToast('✅ AI 笔记已生成！');
+  }, 1000);
+}
+
+// 代码区点击可编辑 — 用直接函数绑定代替嵌套 DOMContentLoaded
+function setupCodeEditor() {
+  const codeArea = document.getElementById('codeArea');
+  if (codeArea) {
+    codeArea.addEventListener('click', function() {
+      if (this.getAttribute('contenteditable') === 'false') {
+        this.setAttribute('contenteditable', 'true');
+        this.focus();
+        showToast('✏️ 代码区已解锁，可直接编辑');
+      }
+    });
+    codeArea.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        this.setAttribute('contenteditable', 'false');
+        showToast('💾 已退出编辑模式');
+      }
+    });
+  }
+}
+
+// ==========================================
 // 工具函数
 // ==========================================
 function getCurrentTime() {
@@ -1552,6 +1999,7 @@ function escapeHtml(text) {
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   updateSidePanel('dashboard');
+  setupCodeEditor();
 });
 </script>
 </body>
