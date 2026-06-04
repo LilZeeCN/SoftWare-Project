@@ -216,12 +216,6 @@ body::after {
    COURSE DETAIL PAGE (tabbed)
    ======================================== */
 /* old classroom page styles removed — now a tab panel */
-#page-course-detail.active {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
 #page-course-detail .page-header {
   flex-shrink: 0;
   margin-bottom: 0;
@@ -612,14 +606,14 @@ body::after {
 
 
 /* ---- Lab Workspace — interactive-tutor style ---- */
-/* Color tokens for lab workspace */
+/* Color tokens for lab workspace — unified with main app */
 :root {
-  --lab-bg-base: #050505;
-  --lab-bg-surface: #0A0A0A;
-  --lab-bg-raised: #111111;
-  --lab-bg-muted: #1A1A1A;
-  --lab-border: oklch(from white l c h / 0.08);
-  --lab-border-subtle: oklch(from white l c h / 0.05);
+  --lab-bg-base: #070d1a;
+  --lab-bg-surface: #0a1225;
+  --lab-bg-raised: #0f1b30;
+  --lab-bg-muted: #15233d;
+  --lab-border: rgba(255,255,255,0.06);
+  --lab-border-subtle: rgba(255,255,255,0.04);
 }
 .labs-container { background: var(--lab-bg-base); border: 1px solid var(--lab-border); border-radius: 12px; overflow: hidden; }
 .labs-body { display: flex; min-height: 0; height: 100%; }
@@ -683,7 +677,7 @@ body::after {
 .lab-gutter { width: 48px; background: var(--lab-bg-surface); text-align: right; padding: 12px 12px 0 0; font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, monospace; font-size: 13px; line-height: 20px; color: rgba(255,255,255,0.18); user-select: none; flex-shrink: 0; overflow: hidden; }
 .lab-gutter div { height: 20px; }
 .lab-gutter .active-ln { color: rgba(255,255,255,0.5); }
-.lab-code { flex: 1; padding: 12px 16px; font-family: 'JetBrains Code', 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, monospace; font-size: 13px; line-height: 20px; color: #d4d4d4; overflow: auto; white-space: pre; tab-size: 4; cursor: text; outline: none; caret-color: #aeafad; }
+.lab-code { flex: 1; padding: 12px 16px; font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, monospace; font-size: 13px; line-height: 20px; color: #d4d4d4; overflow: auto; white-space: pre; tab-size: 4; cursor: text; outline: none; caret-color: #aeafad; }
 .lab-code::selection { background: rgba(99,102,241,0.3); }
 .lab-code::-moz-selection { background: rgba(99,102,241,0.3); }
 .lab-code::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -1026,21 +1020,30 @@ tr.current-row .sched-wk { color: var(--gold); }
 .main-content:has(#page-course-detail.active) {
   padding: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 #page-course-detail.active {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .course-fullscreen-content {
   width: 100%;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 #page-course-detail .course-tab-panel.active {
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   box-sizing: border-box;
 }
@@ -1185,6 +1188,97 @@ tr.current-row .sched-wk { color: var(--gold); }
 
 /* No rail padding needed */
 #page-course-detail .course-back-btn { display: none; }
+
+/* ===== Visible Tab Bar for Course Detail ===== */
+.course-visible-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 12px 32px;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.course-visible-tabs .vt-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: transparent;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font-sans);
+  position: relative;
+}
+.course-visible-tabs .vt-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  border-radius: 2px 2px 0 0;
+  transition: background 0.15s;
+}
+.course-visible-tabs .vt-tab:hover {
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.03);
+}
+.course-visible-tabs .vt-tab.active {
+  color: var(--gold);
+  background: rgba(212,168,83,0.06);
+}
+.course-visible-tabs .vt-tab.active::after {
+  background: var(--gold);
+}
+.course-visible-tabs .vt-tab svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+}
+.course-visible-tabs .vt-tab.active svg {
+  opacity: 1;
+}
+
+/* ===== AI Typing Indicator ===== */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+.typing-indicator .typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  animation: typingBounce 1.4s infinite;
+}
+.typing-indicator .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* ===== SVG Icon Helper ===== */
+.icon-svg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.icon-svg svg {
+  width: 100%;
+  height: 100%;
+}
 </style>
 <style data-od-tweaks-bridge-style="">
 [data-od-tweaks-hidden] .tw-panel {
@@ -1306,44 +1400,44 @@ tr.current-row .sched-wk { color: var(--gold); }
 
       <div class="nav-card-grid" data-od-id="path-0-0-0-1">
         <div class="nav-card-item" onclick="navigateTo('courses')">
-          <div class="nc-icon" style="background:rgba(124,109,240,0.12);color:var(--accent-purple);">📚</div>
+          <div class="nc-icon" style="background:rgba(124,109,240,0.12);color:var(--accent-purple);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
           <div class="nc-title">我的课程</div>
         </div>
         <div class="nav-card-item" onclick="navigateTo('add-course')">
-          <div class="nc-icon" style="background:rgba(74,143,231,0.12);color:var(--accent-blue);">✏️</div>
+          <div class="nc-icon" style="background:rgba(74,143,231,0.12);color:var(--accent-blue);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
           <div class="nc-title">创建课程</div>
         </div>
         <div class="nav-card-item" onclick="navigateTo('report')">
-          <div class="nc-icon" style="background:var(--gold-glow);color:var(--gold);">📊</div>
+          <div class="nc-icon" style="background:var(--gold-glow);color:var(--gold);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
           <div class="nc-title">学习报告</div>
         </div>
         <div class="nav-card-item" onclick="navigateTo('certificates')">
-          <div class="nc-icon" style="background:var(--jade-glow);color:var(--jade);">🏅</div>
+          <div class="nc-icon" style="background:var(--jade-glow);color:var(--jade);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
           <div class="nc-title">我的证书</div>
         </div>
       </div>
 
       <div class="stats-grid" data-od-id="path-0-0-0-2">
         <div class="stat-card">
-          <div class="stat-icon">📖</div>
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></div>
           <div class="stat-value">4</div>
           <div class="stat-label">进行中的课程</div>
           <div class="stat-trend up">↑ 较上周 +1</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">✅</div>
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
           <div class="stat-value">68%</div>
           <div class="stat-label">整体完成度</div>
           <div class="stat-trend up">↑ 较上周 +12%</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">🗓️</div>
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
           <div class="stat-value">12</div>
           <div class="stat-label">本周待学章节</div>
           <div class="stat-trend down">← 3 项逾期</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">🏆</div>
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
           <div class="stat-value">3</div>
           <div class="stat-label">已获证书</div>
           <div class="stat-trend up">↑ 再完成 1 门可获新证书</div>
@@ -1366,48 +1460,48 @@ tr.current-row .sched-wk { color: var(--gold); }
       </div>
       <div class="course-grid" data-od-id="path-0-0-1-1">
         <div class="course-card" onclick="openCourseDetail('python')">
-          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#1a2a3a,#0d1b2a);"></div><div class="banner-icon">🐍</div></div>
+          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#1a2a3a,#0d1b2a);"></div><div class="banner-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div></div>
           <div class="card-body">
             <span class="course-tag" style="background:var(--gold-glow);color:var(--gold);">进行中</span>
             <h3 data-od-id="path-0-0-1-1-0-1-1">Python 核心编程</h3>
             <div class="course-desc">从基础语法到高级特性，系统掌握 Python 编程语言的核心概念与实践技巧。</div>
-            <div class="course-stats"><span>📚 12 章</span><span>⏱ 7/12 已完成</span></div>
+            <div class="course-stats"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg> 12 章</span><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 7/12 已完成</span></div>
           </div>
         </div>
         <div class="course-card" onclick="openCourseDetail('ml')">
-          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#1a2a2a,#0d1b1b);"></div><div class="banner-icon">🤖</div></div>
+          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#1a2a2a,#0d1b1b);"></div><div class="banner-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div></div>
           <div class="card-body">
             <span class="course-tag" style="background:var(--jade-glow);color:var(--jade);">进行中</span>
             <h3 data-od-id="path-0-0-1-1-1-1-1">机器学习导论</h3>
             <div class="course-desc">了解机器学习的基本概念、经典算法和实战应用，涵盖监督学习、无监督学习与深度学习。</div>
-            <div class="course-stats"><span>📚 10 章</span><span>⏱ 4/10 已完成</span></div>
+            <div class="course-stats"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg> 10 章</span><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 4/10 已完成</span></div>
           </div>
         </div>
         <div class="course-card" onclick="openCourseDetail('web')">
-          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#2a1a3a,#1a0d2a);"></div><div class="banner-icon">🌐</div></div>
+          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#2a1a3a,#1a0d2a);"></div><div class="banner-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div></div>
           <div class="card-body">
             <span class="course-tag" style="background:rgba(124,109,240,0.12);color:var(--accent-purple);">进行中</span>
             <h3 data-od-id="path-0-0-1-1-2-1-1">Web 全栈开发</h3>
             <div class="course-desc">从前端到后端，系统学习现代 Web 开发技术栈，包括 React、Node.js 和数据库设计。</div>
-            <div class="course-stats"><span>📚 8 章</span><span>⏱ 3/8 已完成</span></div>
+            <div class="course-stats"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg> 8 章</span><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 3/8 已完成</span></div>
           </div>
         </div>
         <div class="course-card" onclick="openCourseDetail('ds')">
-          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#2a2a1a,#1b1b0d);"></div><div class="banner-icon">🏆</div></div>
+          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#2a2a1a,#1b1b0d);"></div><div class="banner-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div></div>
           <div class="card-body">
             <span class="course-tag" style="background:rgba(245,158,11,0.12);color:var(--warning);">已结课</span>
             <h3 data-od-id="path-0-0-1-1-3-1-1">数据结构与算法</h3>
             <div class="course-desc">掌握常见数据结构和经典算法，提升编程思维与问题解决能力。</div>
-            <div class="course-stats"><span>📚 10 章</span><span>✅ 已获证书</span></div>
+            <div class="course-stats"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg> 10 章</span><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--jade)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 已获证书</span></div>
           </div>
         </div>
         <div class="course-card" onclick="openCourseDetail('prob')">
-          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#1a2a2a,#0d1b1b);"></div><div class="banner-icon">📊</div></div>
+          <div class="card-banner"><div class="banner-bg" style="background:linear-gradient(135deg,#1a2a2a,#0d1b1b);"></div><div class="banner-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div></div>
           <div class="card-body">
             <span class="course-tag" style="background:rgba(245,158,11,0.12);color:var(--warning);">已结课</span>
             <h3 data-od-id="path-0-0-1-1-4-1-1">概率论与数理统计</h3>
             <div class="course-desc">系统学习概率论基础与数理统计方法，培养数据思维与统计分析能力。</div>
-            <div class="course-stats"><span>📚 8 章</span><span>✅ 已获证书</span></div>
+            <div class="course-stats"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg> 8 章</span><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--jade)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 已获证书</span></div>
           </div>
         </div>
         <div class="course-card" onclick="navigateTo('add-course')" style="border:1px dashed var(--border-light);display:flex;align-items:center;justify-content:center;min-height:200px;background:transparent;">
@@ -1456,15 +1550,15 @@ tr.current-row .sched-wk { color: var(--gold); }
             <div class="style-selector">
               <div class="style-option">
                 <input type="radio" name="style" id="style-minimal" value="minimal" checked="" data-od-id="path-0-0-2-1-1-1-1-0-0">
-                <label for="style-minimal"><span class="style-icon">📝</span><span class="style-name">简约</span><span class="style-desc">清晰简洁，专注内容</span></label>
+                <label for="style-minimal"><span class="style-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></span><span class="style-name">简约</span><span class="style-desc">清晰简洁，专注内容</span></label>
               </div>
               <div class="style-option">
                 <input type="radio" name="style" id="style-academic" value="academic" data-od-id="path-0-0-2-1-1-1-1-1-0">
-                <label for="style-academic"><span class="style-icon">🎓</span><span class="style-name">学术</span><span class="style-desc">正式严谨，适合理论</span></label>
+                <label for="style-academic"><span class="style-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg></span><span class="style-name">学术</span><span class="style-desc">正式严谨，适合理论</span></label>
               </div>
               <div class="style-option">
                 <input type="radio" name="style" id="style-lively" value="lively" data-od-id="path-0-0-2-1-1-1-1-2-0">
-                <label for="style-lively"><span class="style-icon">✨</span><span class="style-name">活泼</span><span class="style-desc">生动有趣，适合入门</span></label>
+                <label for="style-lively"><span class="style-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></span><span class="style-name">活泼</span><span class="style-desc">生动有趣，适合入门</span></label>
               </div>
             </div>
           </div>
@@ -1492,6 +1586,30 @@ tr.current-row .sched-wk { color: var(--gold); }
 
 
       <div class="course-fullscreen-content" data-od-id="path-0-0-3-1">
+
+        <!-- Visible Tab Bar -->
+        <div class="course-visible-tabs">
+          <button class="vt-tab active" data-tab="outline" onclick="switchCourseTab('outline')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+            大纲
+          </button>
+          <button class="vt-tab" data-tab="notes" onclick="switchCourseTab('notes')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            笔记
+          </button>
+          <button class="vt-tab" data-tab="labs" onclick="switchCourseTab('labs')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/></svg>
+            实验
+          </button>
+          <button class="vt-tab" data-tab="classroom" onclick="switchCourseTab('classroom')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            对话
+          </button>
+          <button class="vt-tab" data-tab="projects" onclick="switchCourseTab('projects')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+            项目
+          </button>
+        </div>
 
         <!-- TAB: 大纲 (CS61B style) -->
         <div class="course-tab-panel active" id="tab-outline" data-od-id="path-0-0-3-1-0">
@@ -1669,7 +1787,7 @@ tr.current-row .sched-wk { color: var(--gold); }
               <span style="font-size:14px;font-weight:600;color:var(--text-secondary);">学习笔记</span>
             </div>
             <div class="notes-toolbar-right">
-              <button class="btn btn-primary" style="font-size:12px;padding:6px 14px;" onclick="generateAINotes()" data-od-id="path-0-0-3-1-1-0-1-0">🤖 AI 生成笔记</button>
+              <button class="btn btn-primary" style="font-size:12px;padding:6px 14px;" onclick="generateAINotes()" data-od-id="path-0-0-3-1-1-0-1-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg> AI 生成笔记</button>
               <button class="btn btn-secondary" style="font-size:12px;padding:6px 14px;" onclick="showToast('📝 新建笔记已创建')" data-od-id="path-0-0-3-1-1-0-1-1">＋ 新建</button>
             </div>
           </div>
@@ -1677,28 +1795,28 @@ tr.current-row .sched-wk { color: var(--gold); }
             <div class="notes-sidebar">
               <div class="ns-header">学习章节</div>
               <div class="ns-item active">
-                <div class="ns-title">📖 第 7 章 · 面向对象</div>
+                <div class="ns-title">第 7 章 · 面向对象</div>
                 <div class="ns-date">2026-05-28</div>
               </div>
               <div class="ns-item" onclick="showToast('📓 切换至第 6 章笔记')">
-                <div class="ns-title">📖 第 6 章 · 数据结构</div>
+                <div class="ns-title">第 6 章 · 数据结构</div>
                 <div class="ns-date">2026-05-25</div>
               </div>
               <div class="ns-item" onclick="showToast('📓 切换至第 5 章笔记')">
-                <div class="ns-title">📖 第 5 章 · 函数与模块</div>
+                <div class="ns-title">第 5 章 · 函数与模块</div>
                 <div class="ns-date">2026-05-20</div>
               </div>
               <div class="ns-item" onclick="showToast('📓 切换至第 4 章笔记')">
-                <div class="ns-title">📖 第 4 章 · 字符串操作</div>
+                <div class="ns-title">第 4 章 · 字符串操作</div>
                 <div class="ns-date">2026-05-15</div>
               </div>
             </div>
             <div class="notes-main">
               <div class="nm-header">
-                <h3 data-od-id="path-0-0-3-1-1-1-1-0-0">📖 第 7 章 · 面向对象编程 — 学习笔记</h3>
+                <h3 data-od-id="path-0-0-3-1-1-1-1-0-0">第 7 章 · 面向对象编程 — 学习笔记</h3>
                 <div class="nm-actions">
-                  <button class="btn-ghost" style="font-size:12px;padding:4px 12px;" onclick="showToast('📥 笔记已导出为 .md 文件')" data-od-id="path-0-0-3-1-1-1-1-0-1-0">📥 导出</button>
-                  <button class="btn-ghost gold" style="font-size:12px;padding:4px 12px;" onclick="showToast('✏️ 已进入编辑模式')" data-od-id="path-0-0-3-1-1-1-1-0-1-1">✏️ 编辑</button>
+                  <button class="btn-ghost" style="font-size:12px;padding:4px 12px;" onclick="showToast('📥 笔记已导出为 .md 文件')" data-od-id="path-0-0-3-1-1-1-1-0-1-0"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 导出</button>
+                  <button class="btn-ghost gold" style="font-size:12px;padding:4px 12px;" onclick="showToast('✏️ 已进入编辑模式')" data-od-id="path-0-0-3-1-1-1-1-0-1-1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg> 编辑</button>
                 </div>
               </div>
               <div class="nm-body">
@@ -1733,50 +1851,50 @@ tr.current-row .sched-wk { color: var(--gold); }
             <div class="labs-list-grid" data-od-id="path-0-0-3-1-2-0-1">
               <div class="lab-card" onclick="openLab(0)">
                 <div class="lab-card-header">
-                  <span class="lab-card-icon" style="background:var(--gold-glow);color:var(--gold);">🐍</span>
+                  <span class="lab-card-icon" style="background:var(--gold-glow);color:var(--gold);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
                   <span class="lab-card-status" style="background:var(--jade-glow);color:var(--jade);">进行中</span>
                 </div>
                 <h3 data-od-id="path-0-0-3-1-2-0-1-0-1">Lab 3 · 学生成绩管理系统</h3>
                 <p>第 7 章 面向对象</p>
                 <div class="lab-card-meta">
-                  <span>⏱ 约 45 分钟</span>
-                  <span>📊 中等难度</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 约 45 分钟</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> 中等难度</span>
                 </div>
               </div>
               <div class="lab-card" onclick="openLab(1)">
                 <div class="lab-card-header">
-                  <span class="lab-card-icon" style="background:var(--jade-glow);color:var(--jade);">🤖</span>
+                  <span class="lab-card-icon" style="background:var(--jade-glow);color:var(--jade);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></span>
                   <span class="lab-card-status" style="background:var(--gold-glow);color:var(--gold);">未开始</span>
                 </div>
                 <h3 data-od-id="path-0-0-3-1-2-0-1-1-1">Lab 4 · 线性回归实战</h3>
                 <p>第 4 章 神经网络</p>
                 <div class="lab-card-meta">
-                  <span>⏱ 约 60 分钟</span>
-                  <span>📊 较高难度</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 约 60 分钟</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> 较高难度</span>
                 </div>
               </div>
               <div class="lab-card" onclick="openLab(2)">
                 <div class="lab-card-header">
-                  <span class="lab-card-icon" style="background:rgba(124,109,240,0.12);color:var(--accent-purple);">🌐</span>
+                  <span class="lab-card-icon" style="background:rgba(124,109,240,0.12);color:var(--accent-purple);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
                   <span class="lab-card-status" style="background:var(--jade-glow);color:var(--jade);">已完成</span>
                 </div>
                 <h3 data-od-id="path-0-0-3-1-2-0-1-2-1">Lab 2 · React 组件开发</h3>
                 <p>第 3 章 React 基础</p>
                 <div class="lab-card-meta">
-                  <span>⏱ 约 30 分钟</span>
-                  <span>📊 基础难度</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 约 30 分钟</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> 基础难度</span>
                 </div>
               </div>
               <div class="lab-card" onclick="openLab(3)">
                 <div class="lab-card-header">
-                  <span class="lab-card-icon" style="background:var(--gold-glow);color:var(--gold);">📊</span>
+                  <span class="lab-card-icon" style="background:var(--gold-glow);color:var(--gold);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
                   <span class="lab-card-status" style="background:var(--gold-glow);color:var(--gold);">未开始</span>
                 </div>
                 <h3 data-od-id="path-0-0-3-1-2-0-1-3-1">Lab 5 · 数据可视化</h3>
                 <p>第 5 章 排序算法</p>
                 <div class="lab-card-meta">
-                  <span>⏱ 约 50 分钟</span>
-                  <span>📊 中等难度</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 约 50 分钟</span>
+                  <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> 中等难度</span>
                 </div>
               </div>
             </div>
@@ -1832,25 +1950,25 @@ tr.current-row .sched-wk { color: var(--gold); }
                       </div>
                       <div class="lab-filetree-list" data-od-id="path-0-0-3-1-2-1-0-1-1-0-0-1">
                         <div class="ft-folder open">
-                          <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;">📁</span><span>lab3</span></div>
+                          <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span><span>lab3</span></div>
                           <div class="ft-children">
                             <div class="ft-folder open">
-                              <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;">📂</span><span>src</span></div>
+                              <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span><span>src</span></div>
                               <div class="ft-children">
-                                <div class="ft-item active" onclick="selectLabFile(this,'main.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>main.py</span></div>
-                                <div class="ft-item" onclick="selectLabFile(this,'models.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>models.py</span></div>
-                                <div class="ft-item" onclick="selectLabFile(this,'utils.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>utils.py</span></div>
+                                <div class="ft-item active" onclick="selectLabFile(this,'main.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>main.py</span></div>
+                                <div class="ft-item" onclick="selectLabFile(this,'models.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>models.py</span></div>
+                                <div class="ft-item" onclick="selectLabFile(this,'utils.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>utils.py</span></div>
                               </div>
                             </div>
                             <div class="ft-folder">
-                              <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;">📂</span><span>tests</span></div>
+                              <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span><span>tests</span></div>
                               <div class="ft-children">
-                                <div class="ft-item" onclick="selectLabFile(this,'test_main.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>test_main.py</span></div>
-                                <div class="ft-item" onclick="selectLabFile(this,'test_models.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>test_models.py</span></div>
+                                <div class="ft-item" onclick="selectLabFile(this,'test_main.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>test_main.py</span></div>
+                                <div class="ft-item" onclick="selectLabFile(this,'test_models.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>test_models.py</span></div>
                               </div>
                             </div>
-                            <div class="ft-item" onclick="selectLabFile(this,'requirements.txt')"><span class="ft-arrow"></span><span class="ft-icon" style="color:rgba(255,255,255,0.3);">📄</span><span>requirements.txt</span></div>
-                            <div class="ft-item" onclick="selectLabFile(this,'README.md')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#34d399;">📝</span><span>README.md</span></div>
+                            <div class="ft-item" onclick="selectLabFile(this,'requirements.txt')"><span class="ft-arrow"></span><span class="ft-icon" style="color:rgba(255,255,255,0.3);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span>requirements.txt</span></div>
+                            <div class="ft-item" onclick="selectLabFile(this,'README.md')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#34d399;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span>README.md</span></div>
                           </div>
                         </div>
                       </div>
@@ -1962,15 +2080,15 @@ tr.current-row .sched-wk { color: var(--gold); }
         <!-- TAB: 对话 -->
         <div class="course-tab-panel panel-classroom" id="tab-classroom" data-od-id="path-0-0-3-1-3">
           <div style="display:flex;gap:8px;padding:12px 0;flex-shrink:0;flex-wrap:wrap;">
-            <button class="chat-mode-btn active" data-mode="chapter" onclick="switchChatMode('chapter')" data-od-id="path-0-0-3-1-3-0-0">📖 章节问答</button>
-            <button class="chat-mode-btn" data-mode="general" onclick="switchChatMode('general')" data-od-id="path-0-0-3-1-3-0-1">💬 通用问答</button>
+            <button class="chat-mode-btn active" data-mode="chapter" onclick="switchChatMode('chapter')" data-od-id="path-0-0-3-1-3-0-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg> 章节问答</button>
+            <button class="chat-mode-btn" data-mode="general" onclick="switchChatMode('general')" data-od-id="path-0-0-3-1-3-0-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> 通用问答</button>
             <button class="chat-mode-btn" data-mode="new" onclick="newChat()" data-od-id="path-0-0-3-1-3-0-2">＋ 新建对话</button>
           </div>
 
           <div class="chat-container" data-od-id="path-0-0-3-1-3-1">
             <div class="chat-header">
               <div class="ch-left">
-                <span class="ch-title" id="chatTitle" data-od-id="path-0-0-3-1-3-1-0-0-0">📖 章节问答 · Python 核心编程</span>
+                <span class="ch-title" id="chatTitle" data-od-id="path-0-0-3-1-3-1-0-0-0">章节问答 · Python 核心编程</span>
                 <span class="ch-badge" id="chatBadge" data-od-id="path-0-0-3-1-3-1-0-0-1">第 7 章 面向对象</span>
               </div>
               <div class="ch-right">
@@ -1979,21 +2097,21 @@ tr.current-row .sched-wk { color: var(--gold); }
             </div>
             <div class="chat-messages" id="chatMessages" data-od-id="path-0-0-3-1-3-1-1">
               <div class="msg ai" data-od-id="path-0-0-3-1-3-1-1-0">
-                <div class="msg-avatar">🤖</div>
+                <div class="msg-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
                 <div class="msg-bubble">
                   你好！我是你的 AI 学习导师。关于「面向对象编程」这一章，有什么问题我可以帮你解答吗？
                   <div class="msg-time" id="chatInitTime" data-od-id="path-0-0-3-1-3-1-1-0-1-0"></div>
                 </div>
               </div>
               <div class="msg user" data-od-id="path-0-0-3-1-3-1-1-1">
-                <div class="msg-avatar">👤</div>
+                <div class="msg-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
                 <div class="msg-bubble">
                   能帮我解释一下 Python 中的类和对象的区别吗？
                   <div class="msg-time" id="chatUserTime" data-od-id="path-0-0-3-1-3-1-1-1-1-0"></div>
                 </div>
               </div>
               <div class="msg ai" data-od-id="path-0-0-3-1-3-1-1-2">
-                <div class="msg-avatar">🤖</div>
+                <div class="msg-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
                 <div class="msg-bubble">
                   当然可以！让我们用一个生活中的类比来理解：<br><br>
                   <strong>类（Class）</strong> 就像是一张"建筑设计图"，它定义了建筑应该有什么属性（如面积、楼层数）和功能（如开门、关窗）。<br><br>
@@ -2004,7 +2122,7 @@ tr.current-row .sched-wk { color: var(--gold); }
         <span style="color:#e06c75;">self</span>.color = color
 
 my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;">"blue"</span>)</code></pre>
-                  <br>这里 <code style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:13px;">House</code> 是类，<code style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:13px;">my_house</code> 就是对象。还有什么疑问吗？😊
+                  <br>这里 <code style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:13px;">House</code> 是类，<code style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:13px;">my_house</code> 就是对象。还有什么疑问吗？
                   <div class="msg-time" id="chatAiTime" data-od-id="path-0-0-3-1-3-1-1-2-1-14"></div>
                 </div>
               </div>
@@ -2028,7 +2146,7 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
 
               <div class="lab-card" onclick="openProject(0)">
                 <div class="lab-card-header">
-                  <span class="lab-card-icon" style="background:var(--gold-glow);color:var(--gold);">🏗️</span>
+                  <span class="lab-card-icon" style="background:var(--gold-glow);color:var(--gold);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
                   <span class="lab-card-status" style="background:var(--jade-glow);color:var(--jade);">进行中</span>
                 </div>
                 <h3 data-od-id="path-0-0-3-1-4-0-1-0-1">Project 1 · 命令行成绩管理系统</h3>
@@ -2040,7 +2158,7 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
 
               <div class="lab-card" onclick="openProject(1)">
                 <div class="lab-card-header">
-                  <span class="lab-card-icon" style="background:rgba(124,109,240,0.12);color:var(--accent-purple);">📊</span>
+                  <span class="lab-card-icon" style="background:rgba(124,109,240,0.12);color:var(--accent-purple);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
                   <span class="lab-card-status" style="background:rgba(255,255,255,0.06);color:var(--text-tertiary);">未开始</span>
                 </div>
                 <h3 data-od-id="path-0-0-3-1-4-0-1-1-1">Project 2 · 数据分析与可视化工具</h3>
@@ -2113,25 +2231,25 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
                       </div>
                       <div class="lab-filetree-list" data-od-id="path-0-0-3-1-4-2-0-1-1-0-0-1">
                         <div class="ft-folder open">
-                          <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;">📁</span><span>project1</span></div>
+                          <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span><span>project1</span></div>
                           <div class="ft-children">
                             <div class="ft-folder open">
-                              <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;">📂</span><span>src</span></div>
+                              <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span><span>src</span></div>
                               <div class="ft-children">
-                                <div class="ft-item active" onclick="selectProjFile(this,'main.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>main.py</span></div>
-                                <div class="ft-item" onclick="selectProjFile(this,'models.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>models.py</span></div>
-                                <div class="ft-item" onclick="selectProjFile(this,'utils.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>utils.py</span></div>
+                                <div class="ft-item active" onclick="selectProjFile(this,'main.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>main.py</span></div>
+                                <div class="ft-item" onclick="selectProjFile(this,'models.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>models.py</span></div>
+                                <div class="ft-item" onclick="selectProjFile(this,'utils.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>utils.py</span></div>
                               </div>
                             </div>
                             <div class="ft-folder">
-                              <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;">📂</span><span>tests</span></div>
+                              <div class="ft-item" onclick="this.parentElement.classList.toggle('open')"><span class="ft-arrow">▶</span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span><span>tests</span></div>
                               <div class="ft-children">
-                                <div class="ft-item" onclick="selectProjFile(this,'test_main.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>test_main.py</span></div>
-                                <div class="ft-item" onclick="selectProjFile(this,'test_models.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;">🐍</span><span>test_models.py</span></div>
+                                <div class="ft-item" onclick="selectProjFile(this,'test_main.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>test_main.py</span></div>
+                                <div class="ft-item" onclick="selectProjFile(this,'test_models.py')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span>test_models.py</span></div>
                               </div>
                             </div>
-                            <div class="ft-item" onclick="selectProjFile(this,'requirements.txt')"><span class="ft-arrow"></span><span class="ft-icon" style="color:rgba(255,255,255,0.3);">📄</span><span>requirements.txt</span></div>
-                            <div class="ft-item" onclick="selectProjFile(this,'README.md')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#34d399;">📝</span><span>README.md</span></div>
+                            <div class="ft-item" onclick="selectProjFile(this,'requirements.txt')"><span class="ft-arrow"></span><span class="ft-icon" style="color:rgba(255,255,255,0.3);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span>requirements.txt</span></div>
+                            <div class="ft-item" onclick="selectProjFile(this,'README.md')"><span class="ft-arrow"></span><span class="ft-icon" style="color:#34d399;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span>README.md</span></div>
                           </div>
                         </div>
                       </div>
@@ -2242,19 +2360,19 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
         <div class="fab-menu" data-od-id="path-0-0-3-2-1">
           <button class="fab-back" onclick="navigateTo('courses'); closeFabMenu();" data-od-id="path-0-0-3-2-1-0">← 返回课程</button>
           <button class="fab-item active" data-tab="outline" onclick="switchCourseTab('outline'); closeFabMenu();" data-od-id="path-0-0-3-2-1-1">
-            <span class="fab-item-icon">📋</span><span class="fab-item-label">大纲</span>
+            <span class="fab-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></span><span class="fab-item-label">大纲</span>
           </button>
           <button class="fab-item" data-tab="notes" onclick="switchCourseTab('notes'); closeFabMenu();" data-od-id="path-0-0-3-2-1-2">
-            <span class="fab-item-icon">📝</span><span class="fab-item-label">笔记</span>
+            <span class="fab-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span class="fab-item-label">笔记</span>
           </button>
           <button class="fab-item" data-tab="labs" onclick="switchCourseTab('labs'); closeFabMenu();" data-od-id="path-0-0-3-2-1-3">
-            <span class="fab-item-icon">🧪</span><span class="fab-item-label">实验</span>
+            <span class="fab-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/></svg></span><span class="fab-item-label">实验</span>
           </button>
           <button class="fab-item" data-tab="classroom" onclick="switchCourseTab('classroom'); closeFabMenu();" data-od-id="path-0-0-3-2-1-4">
-            <span class="fab-item-icon">💬</span><span class="fab-item-label">对话</span>
+            <span class="fab-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><span class="fab-item-label">对话</span>
           </button>
           <button class="fab-item" data-tab="projects" onclick="switchCourseTab('projects'); closeFabMenu();" data-od-id="path-0-0-3-2-1-5">
-            <span class="fab-item-icon">🚀</span><span class="fab-item-label">项目</span>
+            <span class="fab-item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></span><span class="fab-item-label">项目</span>
           </button>
         </div>
       </div>
@@ -2275,32 +2393,32 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
 
       <div class="report-grid" data-od-id="path-0-0-4-1">
         <div class="report-stat-card">
-          <div class="rsc-icon">📚</div>
+          <div class="rsc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></div>
           <div class="rsc-value">128</div>
           <div class="rsc-label">总学习章节</div>
         </div>
         <div class="report-stat-card">
-          <div class="rsc-icon">⏱</div>
+          <div class="rsc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
           <div class="rsc-value">86<span style="font-size:16px;color:var(--text-tertiary);">h</span></div>
           <div class="rsc-label">总学习时长</div>
         </div>
         <div class="report-stat-card">
-          <div class="rsc-icon">✅</div>
+          <div class="rsc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
           <div class="rsc-value">24</div>
           <div class="rsc-label">已完成实验</div>
         </div>
         <div class="report-stat-card">
-          <div class="rsc-icon">🏆</div>
+          <div class="rsc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
           <div class="rsc-value">3</div>
           <div class="rsc-label">获得证书</div>
         </div>
         <div class="report-stat-card">
-          <div class="rsc-icon">💬</div>
+          <div class="rsc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
           <div class="rsc-value">156</div>
           <div class="rsc-label">AI 问答次数</div>
         </div>
         <div class="report-stat-card">
-          <div class="rsc-icon">🔥</div>
+          <div class="rsc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
           <div class="rsc-value">7</div>
           <div class="rsc-label">连续学习天数</div>
         </div>
@@ -2357,7 +2475,7 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
         <div class="cert-card">
           <div class="cert-ribbon"></div>
           <div class="cert-body">
-            <div class="cert-seal">🏅</div>
+            <div class="cert-seal"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
             <div class="cert-title">数据结构与算法</div>
             <div class="cert-subtitle">Certificate of Completion</div>
             <div class="cert-divider"></div>
@@ -2369,7 +2487,7 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
         <div class="cert-card">
           <div class="cert-ribbon"></div>
           <div class="cert-body">
-            <div class="cert-seal">🏅</div>
+            <div class="cert-seal"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
             <div class="cert-title">概率论与数理统计</div>
             <div class="cert-subtitle">Certificate of Completion</div>
             <div class="cert-divider"></div>
@@ -2381,7 +2499,7 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
         <div class="cert-card">
           <div class="cert-ribbon"></div>
           <div class="cert-body">
-            <div class="cert-seal">🏅</div>
+            <div class="cert-seal"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
             <div class="cert-title">计算机科学导论</div>
             <div class="cert-subtitle">Certificate of Completion</div>
             <div class="cert-divider"></div>
@@ -2393,7 +2511,7 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
         <div class="cert-card locked">
           <div class="cert-ribbon"></div>
           <div class="cert-body">
-            <div class="cert-seal">🔒</div>
+            <div class="cert-seal"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
             <div class="cert-title">Python 核心编程</div>
             <div class="cert-subtitle">进度 72% · 尚差 3 章</div>
             <div class="cert-divider" style="background:var(--border);"></div>
@@ -2404,7 +2522,7 @@ my_house = <span style="color:#e5c07b;">House</span>(<span style="color:#98c379;
         <div class="cert-card locked">
           <div class="cert-ribbon"></div>
           <div class="cert-body">
-            <div class="cert-seal">🔒</div>
+            <div class="cert-seal"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
             <div class="cert-title">机器学习导论</div>
             <div class="cert-subtitle">进度 45% · 尚差 6 章</div>
             <div class="cert-divider" style="background:var(--border);"></div>
@@ -2623,6 +2741,11 @@ function switchCourseTab(tabName) {
   const fabItem = document.querySelector(`.fab-item[data-tab="${tabName}"]`);
   if (fabItem) fabItem.classList.add('active');
 
+  // Update visible tab bar highlights
+  document.querySelectorAll('.course-visible-tabs .vt-tab').forEach(t => t.classList.remove('active'));
+  const vtTab = document.querySelector(`.course-visible-tabs .vt-tab[data-tab="${tabName}"]`);
+  if (vtTab) vtTab.classList.add('active');
+
 
   // 切换到非实验 tab 时退出实验全屏
   if (tabName !== 'labs') closeLab();
@@ -2734,11 +2857,11 @@ function switchChatMode(mode) {
   const badge = document.getElementById('chatBadge');
 
   if (mode === 'chapter') {
-    title.textContent = '📖 章节问答 · Python 核心编程';
+    title.textContent = '章节问答 · Python 核心编程';
     badge.textContent = '第 7 章 面向对象';
     badge.style.display = '';
   } else {
-    title.textContent = '💬 通用问答';
+    title.textContent = '通用问答';
     badge.textContent = '全局模式';
     badge.style.display = '';
   }
@@ -2751,7 +2874,7 @@ function newChat() {
   const container = document.getElementById('chatMessages');
   container.innerHTML = `
     <div class="msg ai">
-      <div class="msg-avatar">🤖</div>
+      <div class="msg-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
       <div class="msg-bubble">
         你好！这是新的对话会话 #${chatSessionCount}，有什么我可以帮你的吗？
         <div class="msg-time">${getCurrentTime()}</div>
@@ -2764,7 +2887,7 @@ function clearChat() {
   const container = document.getElementById('chatMessages');
   container.innerHTML = `
     <div class="msg ai">
-      <div class="msg-avatar">🤖</div>
+      <div class="msg-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
       <div class="msg-bubble">
         对话已清空，开始新的提问吧！
         <div class="msg-time">${getCurrentTime()}</div>
@@ -2784,9 +2907,17 @@ function sendChatMessage() {
   // 用户消息
   const userMsg = document.createElement('div');
   userMsg.className = 'msg user';
-  userMsg.innerHTML = `<div class="msg-avatar">👤</div><div class="msg-bubble">${escapeHtml(text)}<div class="msg-time">${time}</div></div>`;
+  userMsg.innerHTML = `<div class="msg-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="msg-bubble">${escapeHtml(text)}<div class="msg-time">${time}</div></div>`;
   messages.appendChild(userMsg);
   input.value = '';
+
+  // Show typing indicator first
+  const typingEl = document.createElement('div');
+  typingEl.className = 'msg ai';
+  typingEl.id = 'typing-indicator';
+  typingEl.innerHTML = `<div class="msg-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  messages.appendChild(typingEl);
+  messages.scrollTop = messages.scrollHeight;
 
   // 模拟 AI 回复
   const responses = [
@@ -2797,9 +2928,11 @@ function sendChatMessage() {
     '简单来说，可以从实际应用的角度来看这个问题……'
   ];
   setTimeout(() => {
+    const existing = document.getElementById('typing-indicator');
+    if (existing) existing.remove();
     const aiMsg = document.createElement('div');
     aiMsg.className = 'msg ai';
-    aiMsg.innerHTML = `<div class="msg-avatar">🤖</div><div class="msg-bubble">${responses[Math.floor(Math.random() * responses.length)]}<div class="msg-time">${time}</div></div>`;
+    aiMsg.innerHTML = `<div class="msg-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div><div class="msg-bubble">${responses[Math.floor(Math.random() * responses.length)]}<div class="msg-time">${time}</div></div>`;
     messages.appendChild(aiMsg);
     messages.scrollTop = messages.scrollHeight;
   }, 500 + Math.random() * 400);
@@ -2872,7 +3005,7 @@ function generateAINotes() {
       <div class="note-content">
         <h4>📌 核心知识点总结（AI 自动生成）</h4>
         <div class="highlight-box">
-          <strong>🤖 本章重点：</strong>面向对象编程是 Python 的核心范式，重点掌握类与对象的关系、封装继承多态三大特性、魔术方法的使用场景。
+          <strong>本章重点：</strong>面向对象编程是 Python 的核心范式，重点掌握类与对象的关系、封装继承多态三大特性、魔术方法的使用场景。
         </div>
         <h4>一、类与对象</h4>
         <p><strong>类（Class）</strong>是模板，<strong>对象（Object）</strong>是实例。使用 <code>class</code> 关键字定义类，通过构造函数 <code>__init__</code> 初始化对象属性。</p>
@@ -2882,7 +3015,7 @@ function generateAINotes() {
         <p>子类 <code>class Sub(Parent):</code> 继承父类所有属性和方法，可通过 <code>super()</code> 调用父类方法。</p>
         <h4>四、多态</h4>
         <p>不同类实现同名方法，调用时根据实际对象类型执行对应方法——"一个接口，多种实现"。</p>
-        <p style="margin-top:16px;font-size:12px;color:var(--text-tertiary);">🤖 由 AI 自动生成 · 基于课程讲义内容总结</p>
+        <p style="margin-top:16px;font-size:12px;color:var(--text-tertiary);">由 AI 自动生成 · 基于课程讲义内容总结</p>
       </div>`;
     showToast('✅ AI 笔记已生成！');
   }, 1000);
