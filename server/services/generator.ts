@@ -13,6 +13,7 @@ import { getSyllabusPrompt } from '../prompts/syllabus';
 import { getLabsPrompt } from '../prompts/labs';
 import { getProjectsPrompt } from '../prompts/projects';
 import { getNotesPrompt } from '../prompts/notes';
+import { getLecturePrompt } from '../prompts/lecture';
 
 /** 从 AI 回复中提取 JSON（兼容 markdown 代码块包裹） */
 function extractJSON<T>(text: string): T {
@@ -58,6 +59,21 @@ export async function generateProject(context: {
   const { system, user } = getProjectsPrompt(context);
   const response = await chat(system, [{ role: 'user', content: user }]);
   return extractJSON(response);
+}
+
+/** 生成讲义内容（完整版或预览版） */
+export async function generateLecture(context: {
+  courseTitle: string;
+  courseDescription: string;
+  weekNumber: number;
+  weekTopic: string;
+  weekDescription: string;
+  style: string;
+  mode: 'full' | 'preview';
+}) {
+  const { system, user } = getLecturePrompt(context);
+  const response = await chat(system, [{ role: 'user', content: user }]);
+  return extractJSON<{ sections: Array<{ title: string; content?: string; estimated_minutes?: number }> }>(response);
 }
 
 /** 生成学习笔记（返回 Markdown 文本，不是 JSON） */
