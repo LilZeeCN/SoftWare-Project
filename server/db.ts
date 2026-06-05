@@ -176,6 +176,20 @@ if (!settingsExists) {
   db.prepare('INSERT INTO settings (id) VALUES (1)').run();
 }
 
+// 迁移：为 settings 表添加 base_url 列（如果不存在）
+try {
+  db.exec('ALTER TABLE settings ADD COLUMN base_url TEXT DEFAULT \'\'');
+} catch {
+  // 列已存在，忽略
+}
+
+// 迁移：为 certificates 表添加 grade 列（如果不存在）
+try {
+  db.exec('ALTER TABLE certificates ADD COLUMN grade TEXT DEFAULT \'\'');
+} catch {
+  // 列已存在，忽略
+}
+
 console.log(`📦 SQLite database initialized at ${DB_PATH}`);
 
 export default db;

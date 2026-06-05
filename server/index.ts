@@ -5,6 +5,11 @@ import path from 'path';
 import './db';
 import { authMiddleware } from './middleware/auth';
 import authRoutes from './routes/auth';
+import coursesRoutes from './routes/courses';
+import outlineRoutes from './routes/outline';
+import reportRoutes from './routes/report';
+import certificatesRoutes from './routes/certificates';
+import settingsRoutes from './routes/settings';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -20,6 +25,11 @@ app.use('/api', authMiddleware);
 // ========== 路由 ==========
 
 app.use('/api/auth', authRoutes);
+app.use('/api/courses', coursesRoutes);
+app.use('/api/courses', outlineRoutes);
+app.use('/api/report', reportRoutes);
+app.use('/api/certificates', certificatesRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // 健康检查
 app.get('/api/health', (_req, res) => {
