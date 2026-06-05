@@ -39,6 +39,12 @@ npm run dev
 git checkout -b feat/pages-display-B
 ```
 
+> ⚠️ **提交前进度记录（必读）**
+>
+> **每次 `git commit` 之前**，必须先在 `progress/zuoyuo/` 文件夹里新建一个 `.md` 文件，记录本次完成了什么。
+> 文件命名：`YYYY-MM-DD-简述.md`（如 `2026-06-05-Dashboard页面.md`）。
+> 不写进度记录就提交的 PR 会被要求补充后再合并。
+
 ### 项目结构速览
 
 你只需要关注这些目录：

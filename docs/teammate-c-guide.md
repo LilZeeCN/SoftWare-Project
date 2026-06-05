@@ -34,6 +34,12 @@ npm run dev
 git checkout -b feat/pages-interactive-C
 ```
 
+> ⚠️ **提交前进度记录（必读）**
+>
+> **每次 `git commit` 之前**，必须先在 `progress/yyh/` 文件夹里新建一个 `.md` 文件，记录本次完成了什么。
+> 文件命名：`YYYY-MM-DD-简述.md`（如 `2026-06-05-设置页面.md`）。
+> 不写进度记录就提交的 PR 会被要求补充后再合并。
+
 ### 项目结构速览
 
 ```
